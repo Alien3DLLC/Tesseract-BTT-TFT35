@@ -25,7 +25,7 @@
  *
  * Default value is: 1 for LED_OFF
 */
-#define STARTUP_KNOB_LED_COLOR 1         // LED_OFF
+#define STARTUP_KNOB_LED_COLOR 6         // LED_OFF
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Keeps the LED state in Marlin Mode
 
 /**
@@ -52,12 +52,12 @@
  * Options: BLACK, BLUE, BROWN, BRRED, CYAN, GBLUE, GRAY, GREEN, MAGENTA, RED, WHITE, YELLOW
  */
 #define ST7920_BKCOLOR BLACK
-#define ST7920_FNCOLOR YELLOW
+#define ST7920_FNCOLOR GREEN
 
 /**
  *  Text displayed at the top of the TFT in Marlin Mode.
  */
-//#define ST7920_BANNER_TEXT "LCD12864 Simulator"
+#define ST7920_BANNER_TEXT "Alien3D Tesseract"
 
 /**
  * Run Marlin Mode Fullscreen
@@ -123,7 +123,7 @@
  */
 #define TITLE_BACKGROUND_COLOR      BLACK  // Title background color // 0xD928
 #define BACKGROUND_COLOR            BLACK  // Background color // 0x0A29
-#define FONT_COLOR                  WHITE  // Font foreground color
+#define FONT_COLOR                  GREEN  // Font foreground color
 #define REMINDER_FONT_COLOR         RED    // Reminder font color, such as: "No print attached", "Busy processing", etc.
 #define VOLUME_REMINDER_FONT_COLOR  GBLUE  // Volume reminder font color, such as: "Card inserted", "Card removed"
 
@@ -133,7 +133,7 @@
 
 //                       PLA      PETG       ABS
 #define PREHEAT_BED      {60,      70,       100}
-#define PREHEAT_HOTEND   {200,     250,      230}
+#define PREHEAT_HOTEND   {200,     235,      230}
 
 #define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
 #define HEAT_SIGN_ID     {"B:",   "T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:"}
@@ -166,9 +166,9 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 235
-#define Y_MAX_POS 235
-#define Z_MAX_POS 250
+#define X_MAX_POS 500
+#define Y_MAX_POS 500
+#define Z_MAX_POS 550
 
 // Specify a pause position as { X, Y, Z_raise }
 #define NOZZLE_PAUSE_RETRACT_LENGTH 15   // (mm)
