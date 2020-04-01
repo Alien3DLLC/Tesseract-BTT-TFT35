@@ -144,23 +144,18 @@ void printSetUpdateWaiting(bool isWaiting)
   update_waiting = isWaiting;
 }
 
-
-void startGcodeExecute(void)
+void printerGotoIdle(void)
 {
-  mustStoreCmd(PRINT_START_GCODE);
-}
-
-void endGcodeExecute(void)
-{
-  for(TOOL i = BED; i < HEATER_NUM; i++)
-  {
+  // disable all heater
+  for(TOOL i = BED; i < HEATER_NUM; i++) {
     mustStoreCmd("%s S0\n", heatCmd[i]);
   }
-  for(u8 i = 0; i < FAN_NUM; i++)
-  {
+  // disable all fan
+  for(u8 i = 0; i < FAN_NUM; i++) {
     mustStoreCmd("%s S0\n", fanCmd[i]);
   }
-  mustStoreCmd(PRINT_END_GCODE);
+  // disable all stepper
+  mustStoreCmd("M18\n");
 }
 
 //only return gcode file name except path
@@ -234,13 +229,15 @@ void menuBeforePrinting(void)
       infoPrinting.size  = f_size(&infoPrinting.file);
       infoPrinting.cur   = infoPrinting.file.fptr;
       if(infoSettings.send_start_gcode == 1 && infoPrinting.cur == 0){ // PLR continue printing, CAN NOT use start gcode
-        startGcodeExecute();
+        mustStoreCmd(PRINT_START_GCODE);
       }
       break;
   }
   infoPrinting.printing = true;
   infoMenu.menu[infoMenu.cur] = menuPrinting;
   printingItems.title.address = getCurGcodeName(infoFile.title);
+  printingItems.items[KEY_ICON_7].icon = ICON_STOP;
+  printingItems.items[KEY_ICON_7].label.index = LABEL_STOP;
 }
 
 
@@ -669,12 +666,10 @@ void endPrinting(void)
   infoPrinting.printing = infoPrinting.pause = false;
   powerFailedClose();
   powerFailedDelete();
-  if(infoSettings.send_end_gcode == 1){
-    endGcodeExecute();
+  if(infoSettings.send_end_gcode == 1){    
+    mustStoreCmd(PRINT_END_GCODE);
   }
-  printingItems.items[KEY_ICON_7].icon = ICON_BACK;
-  printingItems.items[KEY_ICON_7].label.index = LABEL_BACK;
-  menuDrawItem(&printingItems.items[KEY_ICON_7], KEY_ICON_7);
+  printerGotoIdle();
 }
 
 
@@ -682,6 +677,10 @@ void completePrinting(void)
 {
   BUZZER_PLAY(sound_success);
   endPrinting();
+  printingItems.items[KEY_ICON_7].icon = ICON_BACK;
+  printingItems.items[KEY_ICON_7].label.index = LABEL_BACK;
+  if (infoMenu.menu[infoMenu.cur] == menuPrinting)
+    menuDrawItem(&printingItems.items[KEY_ICON_7], KEY_ICON_7);
   if(infoSettings.auto_off) // Auto shut down after printing
   {
 		infoMenu.menu[++infoMenu.cur] = menuShutDown;

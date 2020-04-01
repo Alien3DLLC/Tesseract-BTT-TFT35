@@ -1,7 +1,7 @@
 #include "usart.h"
 #include "GPIO_Init.h"
 
-static USART_TypeDef *usart[_USART_CNT] = {
+static USART_TypeDef * const usart[_USART_CNT] = {
   USART1,  //TX--PA9  RX--PA10
   USART2,  //TX--PA2  RX--PA3
   USART3,  //TX--PB10 RX--PB11
@@ -69,7 +69,7 @@ void USART_Config(uint8_t port, uint32_t baud, uint16_t usart_it)
 {
   USART_Protocol_Init(port, baud);
   USART_IRQ_Init(port, usart_it);
-  USART_GPIO_Init(port);   //所有初始化完成后,再使能IO, 否则上电后会自动发送一个 0xFF
+  USART_GPIO_Init(port);   //After all initialization is completed, enable IO, otherwise a 0xFF will be sent automatically after power-on
 }
 
 void USART_DeConfig(uint8_t port)
